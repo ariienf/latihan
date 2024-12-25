@@ -9,8 +9,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    // Ambil data pengguna
+    $sales = \App\Models\User::all();
+
+    // Kirim data ke view
+    return view('dashboard', compact('sales'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

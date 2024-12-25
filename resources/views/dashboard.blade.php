@@ -13,6 +13,32 @@
                 <p class="mt-2">Anda telah berhasil masuk. Lihat penawaran terbaru di bawah ini.</p>
             </div>
 
+            <!-- Data Sales -->
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Data Sales</h3>
+                <table class="w-full border-collapse overflow-hidden rounded-lg shadow-md">
+                    <thead>
+                        <tr class="bg-blue-600 text-black">
+                            <th class="px-4 py-3 text-left">ID</th>
+                            <th class="px-4 py-3 text-left">Sales</th>
+                            <th class="px-4 py-3 text-left">Email</th>
+                            <th class="px-4 py-3 text-center">Terdaftar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($sales as $sale)
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->id }}</td>
+                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->name }}</td>
+                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->email }}</td>
+                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->created_at->format('d-m-Y') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            
+
             <!-- Data Penawaran -->
             <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Data Penawaran</h3>
@@ -66,7 +92,7 @@
                 </table>
             </div>
 
-            <!-- Data Penawaran -->
+            <!-- Detail Penawaran -->
             <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                 <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Detail Penawaran</h3>
                 <table class="w-full border-collapse overflow-hidden rounded-lg shadow-md">
