@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('harga');
             $table->string('stok');
-            $table->integer('kategori_id');
+            $table->unsignedBigInteger('kategori_id');  // Menggunakan unsignedBigInteger
+            $table->foreign('kategori_id')->references('id')->on('kategoris')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

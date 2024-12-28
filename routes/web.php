@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +18,8 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('sales'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::resource('produks', ProdukController::class);
+Route::resource('kategoris', KategoriController::class);
 
 
 Route::middleware('auth')->group(function () {
