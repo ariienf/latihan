@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('penawarans', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->enum('status', ['Success', 'On Progress'])->default('On Progress'); // Status dengan nilai default
             $table->date('tanggal');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('customer_id'); // Relasi ke tabel customers
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id'); // Relasi ke tabel users
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
     }
+    
+
 
     /**
      * Reverse the migrations.

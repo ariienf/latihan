@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->integer('jumlah');
             $table->integer('subtotal');
-            $table->integer('penawaran_id');
-            $table->integer('produk_id');
+            $table->unsignedBigInteger('penawaran_id');
+            $table->unsignedBigInteger('produk_id');    
+            $table->foreign('penawaran_id')->references('id')->on('penawarans')->onDelete('cascade');
+            $table->foreign('produk_id')->references('id')->on('produks')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
