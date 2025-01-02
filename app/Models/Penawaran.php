@@ -11,20 +11,26 @@ class Penawaran extends Model
 
     protected $fillable = ['status', 'tanggal', 'customer_id', 'user_id'];
 
+    // Menggunakan $casts untuk mendeklarasikan kolom tanggal sebagai tipe date
+    protected $casts = [
+        'tanggal' => 'date',
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function detailPenawarans()
     {
         return $this->hasMany(DetailPenawaran::class);
     }
-    
 }
+
+
 

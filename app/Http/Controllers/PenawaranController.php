@@ -16,107 +16,109 @@ class PenawaranController extends Controller
         // Ambil data penawaran dengan pagination
         $penawarans = Penawaran::with('customer')->paginate(10); // Menampilkan 10 penawaran per halaman
         
-        return view('penawaran.index', compact('penawarans'));
+        // Ambil data customer dengan pagination
+        $customers = Customer::paginate(10); // Menampilkan 10 customer per halaman
+        
+        // Kirim data ke view
+        return view('penawaran.index', compact('penawarans', 'customers'));
     }
 
     public function create()
     {
-        // Ambil semua data produk dan users
-        $produks = Produk::all();
-        $users = User::all(); // Menambahkan daftar user
-        return view('penawaran.create', compact('produks', 'users'));
+        // Ambil data customer dan user
+        $customers = Customer::all();
+        $users = User::all();
+
+        // Kirim data ke view
+        return view('penawaran.create', compact('customers', 'users'));
     }
 
     public function store(Request $request)
     {
         // Validasi input
         $validated = $request->validate([
-            'status' => 'required|in:Success,On Progress',
+            'customer_id' => 'required|exists:customers,id',
+            'user_id' => 'required|exists:users,id',
+            'status' => 'required|string',
             'tanggal' => 'required|date',
-            'customer_nama' => 'required|string|max:255',
-            'customer_email' => 'required|string',
-            'customer_alamat' => 'required|string',
-            'customer_telepon' => 'required|integer',
-            'user_id' => 'required|exists:users,id', // Validasi user_id
-            'produk_ids' => 'required|array', // Validasi produk
-            'produk_ids.*' => 'exists:produks,id', // Pastikan produk yang dipilih ada
-            'jumlahs' => 'required|array', // Jumlah untuk tiap produk
-            'jumlahs.*' => 'integer|min:1', // Pastikan jumlah produk positif
         ]);
-    
-        // Buat data customer
-        $customer = Customer::create([
-            'nama' => $validated['customer_nama'],
-            'email' => $validated['customer_email'],
-            'alamat' => $validated['customer_alamat'],
-            'telepon' => $validated['customer_telepon'],
-        ]);
-    
-        if (!$customer) {
-            return redirect()->back()->withErrors('Gagal membuat data customer.');
-        }
-    
-        // Ambil user yang login
-        $user = User::find($validated['user_id']); // Menggunakan user_id dari form input
-        if (!$user) {
-            return redirect()->route('login')->withErrors('User tidak valid.');
-        }
-    
-        // Buat data penawaran
-        $penawaran = Penawaran::create([
+
+        // Simpan data penawaran
+        Penawaran::create([
+            'customer_id' => $validated['customer_id'],
+            'user_id' => $validated['user_id'],
             'status' => $validated['status'],
             'tanggal' => $validated['tanggal'],
-            'customer_id' => $customer->id,
-            'user_id' => $user->id, // Gunakan user_id yang dipilih
         ]);
-    
-        if (!$penawaran) {
-            return redirect()->back()->withErrors('Gagal membuat penawaran.');
-        }
-    
-        // Validasi stok produk dan buat detail penawaran
-        foreach ($validated['produk_ids'] as $index => $produk_id) {
-            $produk = Produk::find($produk_id);
-            
-            // Pastikan jumlah produk tidak melebihi stok yang tersedia
-            if ($produk->stok < $validated['jumlahs'][$index]) {
-                return redirect()->back()->withErrors('Jumlah produk ' . $produk->nama . ' melebihi stok yang tersedia.');
-            }
-    
-            // Buat detail penawaran
-            DetailPenawaran::create([
-                'penawaran_id' => $penawaran->id,
-                'produk_id' => $produk_id,
-                'jumlah' => $validated['jumlahs'][$index],
-                'subtotal' => $produk->harga * $validated['jumlahs'][$index], // Hitung subtotal
-            ]);
-    
-            // Update stok produk setelah penawaran berhasil dibuat
-            $produk->stok -= $validated['jumlahs'][$index];
-            $produk->save();
-        }
-    
-        return redirect()->route('penawaran.index')->with('success', 'Penawaran berhasil dibuat.');
+
+        return redirect()->route('penawaran.index')->with('success', 'Penawaran berhasil ditambahkan.');
     }
     
 
     public function edit($id)
     {
-        $penawaran = Penawaran::findOrFail($id);
-        return view('penawaran.edit', compact('penawaran'));
+    // Ambil data penawaran berdasarkan ID
+    $penawaran = Penawaran::findOrFail($id);
+    
+    // Ambil data customer dan user
+    $customers = Customer::all();
+    $users = User::all();
+    
+    // Kirim data ke view
+    return view('penawaran.edit', compact('penawaran', 'customers', 'users'));
     }
 
     public function update(Request $request, $id)
+{
+    // Validasi data input
+    $validated = $request->validate([
+        'customer_id' => 'required|exists:customers,id',
+        'user_id' => 'required|exists:users,id',
+        'status' => 'required|in:Success,On Progress',
+        'tanggal' => 'required|date',
+    ]);
+
+    // Ambil data penawaran yang ingin diupdate
+    $penawaran = Penawaran::findOrFail($id);
+
+    // Update data penawaran
+    $penawaran->update([
+        'customer_id' => $validated['customer_id'],
+        'user_id' => $validated['user_id'],
+        'status' => $validated['status'],
+        'tanggal' => $validated['tanggal'],
+    ]);
+
+    return redirect()->route('penawaran.index')->with('success', 'Penawaran berhasil diperbarui.');
+}
+
+
+    public function editCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return view('customer.edit', compact('customer'));
+    }
+
+    public function updateCustomer(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:Success,On Progress',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'alamat' => 'required|string',
+            'telepon' => 'required|string|max:15',
         ]);
 
-        $penawaran = Penawaran::findOrFail($id);
-        $penawaran->update([
-            'status' => $request->status,
-        ]);
+        $customer = Customer::findOrFail($id);
+        $customer->update($request->all());
 
-        return redirect()->route('penawaran.index')->with('success', 'Penawaran berhasil diperbarui.');
+        return redirect()->route('penawaran.index')->with('success', 'Customer berhasil diperbarui.');
+    }
+
+    public function deleteCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+
+        return redirect()->route('penawaran.index')->with('success', 'Customer berhasil dihapus.');
     }
 }

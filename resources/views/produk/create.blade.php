@@ -1,9 +1,4 @@
 <x-app-layout>
-<x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-        Produk
-    </h2>
-</x-slot>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
     <h1 class="mt-6 text-2xl font-semibold text-gray-800 mb-6">Tambah Produk</h1>
     <form action="{{ route('produks.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">

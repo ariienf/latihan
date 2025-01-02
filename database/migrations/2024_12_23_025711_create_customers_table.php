@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email');
             $table->string('alamat');
-            $table->integer('telepon');
+            $table->string('telepon', 15); // Ubah integer menjadi string dengan panjang maksimal 15 karakter
             $table->softDeletes();
             $table->timestamps();
         });

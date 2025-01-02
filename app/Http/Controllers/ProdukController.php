@@ -38,34 +38,33 @@ class ProdukController extends Controller
         return redirect()->route('produks.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
-    public function edit(Produk $produk)
+    public function edit($id)
     {
-        $kategoris = Kategori::all();
-        return view('produks.edit', compact('produks', 'kategoris'));
+        $produk = Produk::findOrFail($id);
+        $kategoris = Kategori::all(); // Ambil semua kategori
+        return view('produk.edit', compact('produk', 'kategoris'));
     }
 
-    public function update(Request $request, Produk $produk)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'harga' => 'required|integer',
-            'stok' => 'required|string',
+            'harga' => 'required|numeric',
+            'stok' => 'required|integer',
             'kategori_id' => 'required|exists:kategoris,id',
         ]);
 
-        Produk::create([
-            'nama' => $request->nama,
-            'harga' => $request->harga,
-            'stok' => $request->stok,
-            'kategori_id' => $request->kategori_id,
-        ]);
+        $produk = Produk::findOrFail($id);
+        $produk->update($validated);
 
-        return redirect()->route('produks.index')->with('success', 'Produk berhasil diubah.');
+        return redirect()->route('produks.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
-    public function destroy(Produk $produk)
+    public function destroy($id)
     {
+        $produk = Produk::findOrFail($id);
         $produk->delete();
+
         return redirect()->route('produks.index')->with('success', 'Produk berhasil dihapus.');
     }
 }

@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nama', 'email', 'alamat', 'telepon'];
-
-    public function penawarans()
-    {
-        return $this->hasMany(Penawaran::class);
-    }
+    protected $fillable = [
+        'nama',
+        'email',
+        'alamat',
+        'telepon',
+    ];
 }
-
