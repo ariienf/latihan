@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Data Penawaran</title>
+        <title>Penawaran</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -32,5 +32,12 @@
                 {{ $slot }}
             </main>
         </div>
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-4 mt-8">
+            <div class="max-w-7xl mx-auto text-center">
+                <p>&copy; {{ date('Y') }} All rights reserved.</p>
+                <p>Designed by @arienf_</p>
+            </div>
+        </footer>
     </body>
 </html>

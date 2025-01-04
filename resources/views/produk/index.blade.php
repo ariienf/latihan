@@ -1,6 +1,8 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <h1 class="mt-6 text-3xl font-semibold text-black">DAFTAR PRODUK</h1>
+
+        <!-- Tombol Tambah -->
         <div class="flex justify-between items-center mb-6 mt-6">
             <div class="space-x-4">
                 <a href="{{ route('produks.create') }}" class="mt-6 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-black font-semibold px-6 py-3 rounded-lg shadow-md hover:from-pink-500 hover:to-indigo-500 focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all duration-300">
@@ -11,37 +13,48 @@
                 </a>
             </div>
         </div>
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <table class="min-w-full table-auto">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">id</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+
+        <!-- Tabel Produk -->
+        <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">ID</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">Nama</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">Harga</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">Stok</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">Kategori</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($produks as $produk)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $produk->id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $produk->nama }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $produk->harga }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $produk->stok }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $produk->kategori->nama }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="{{ route('produks.edit', $produk) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <form action="{{ route('produks.delete', $produk) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Hapus produk ini?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
+                <tbody>
+                    @forelse($produks as $produk)
+                        <tr class="hover:bg-gray-100 text-center">
+                            <td class="border border-gray-300 px-4 py-2 text-sm">{{ $produk->id }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm">{{ $produk->nama }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm">{{ number_format($produk->harga, 0, ',', '.') }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm">{{ $produk->stok }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm">{{ $produk->kategori->nama }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-sm">
+                                <a href="{{ route('produks.edit', $produk) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                <form action="{{ route('produks.delete', $produk) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Hapus produk ini?')">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center text-gray-500 py-4">Tidak ada produk tersedia.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $produks->links() }}
         </div>
     </div>
 </x-app-layout>

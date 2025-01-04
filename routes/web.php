@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DetailPenawaranController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,13 +15,31 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    // Ambil data pengguna
-    $sales = \App\Models\User::all();
+    // Ambil data semua pengguna
+    $users = \App\Models\User::all();
+
+    // Ambil total pengguna
+    $totalUsers = \App\Models\User::count();
+
+    // Ambil data produk dengan relasi kategori
+    $produks = \App\Models\Produk::with('kategori')->paginate(10);
+
+    // Ambil data penawaran dengan relasi customer dan sales
+    $penawarans = \App\Models\Penawaran::with('customer', 'user')->paginate(10);
+    
+    // Ambil data customer
+    $customers = \App\Models\Customer::paginate(10);
+
+    $detailPenawarans = \App\Models\DetailPenawaran::paginate(10);
+
+ 
 
     // Kirim data ke view
-    return view('dashboard', compact('sales'));
+    return view('dashboard', compact('users', 'totalUsers', 'produks', 'penawarans', 'customers', 'detailPenawarans'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+Route::resource('users', UserController::class);
 Route::get('/customers/{id}/edit', [PenawaranController::class, 'editCustomer'])->name('customers.edit');
 Route::put('/customers/{id}', [PenawaranController::class, 'updateCustomer'])->name('customers.update');
 Route::delete('/customers/{id}', [PenawaranController::class, 'deleteCustomer'])->name('customers.delete');

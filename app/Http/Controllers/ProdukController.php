@@ -10,9 +10,12 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        $produks = Produk::with('kategori')->get();
+        // Paginate dengan 10 item per halaman, termasuk relasi kategori
+        $produks = Produk::with('kategori')->paginate(10);
+    
         return view('produk.index', compact('produks'));
     }
+    
 
     public function create()
     {

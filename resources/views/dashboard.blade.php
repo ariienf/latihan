@@ -1,140 +1,140 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <!-- Welcome Message -->
-            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-black shadow-md rounded-lg p-6">
-                <h3 class="text-2xl font-bold">Selamat Datang!</h3>
-                <p class="mt-2">Anda telah berhasil masuk. Lihat penawaran terbaru di bawah ini.</p>
-            </div>
-
-            <!-- Data Sales -->
-            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Data Sales</h3>
-                <table class="w-full border-collapse overflow-hidden rounded-lg shadow-md">
+    
+    <!-- Main Content -->
+    <div class="flex-1 p-6">
+        <!-- Dashboard Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-semibold">Dashboard Overview</h1>
+            <p class="text-gray-600">Welcome to your sales and product management system.</p>
+        </div>
+        <br>
+        <!-- Sales and Products Section -->
+        <div class="flex space-x-8 mb-8">
+            <!-- Sales Section -->
+            <div class="bg-white shadow-md rounded-lg p-6 w-full h-full">
+                <h2 class="text-xl font-semibold mb-4">Daftar Sales</h2>
+                <p>Total Sales: <span class="text-blue-500">{{ $totalUsers }}</span></p>
+                <table class="table-auto w-full border-collapse border border-gray-300 mt-4">
                     <thead>
-                        <tr class="bg-blue-600 text-black">
-                            <th class="px-4 py-3 text-left">ID</th>
-                            <th class="px-4 py-3 text-left">Sales</th>
-                            <th class="px-4 py-3 text-left">Email</th>
-                            <th class="px-4 py-3 text-center">Terdaftar</th>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">No</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Sales</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Terdaftar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($sales as $sale)
-                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->id }}</td>
-                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->name }}</td>
-                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->email }}</td>
-                                <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">{{ $sale->created_at->format('d-m-Y') }}</td>
+                        @forelse($users as $user)
+                            <tr class="hover:bg-gray-100">
+                                <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $user->name }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $user->created_at->format('d M Y, H:i') }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-gray-500 py-4">No sales found.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-            
 
-            <!-- Data Penawaran -->
-            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Data Penawaran</h3>
-                <table class="w-full border-collapse overflow-hidden rounded-lg shadow-md">
+            <!-- Products Section -->
+            <div class="bg-white shadow-md rounded-lg p-6 w-full h-full">
+                <h2 class="text-xl font-semibold mb-4">Daftar Produk</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr class="bg-blue-600 text-black">
-                            <th class="px-4 py-3 text-left">Penawaran</th>
-                            <th class="px-4 py-3 text-left">Sales</th>
-                            <th class="px-4 py-3 text-left">Tanggal</th>
-                            <th class="px-4 py-3 text-center">Status</th>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Nama</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Harga</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Stok</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Kategori</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">1</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Arie</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">23-12-2024</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">
-                                <button 
-                                    onclick="showDetails('detail-penawaran-1')" 
-                                    class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600 transition">
-                                    Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">2</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Rizkan</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">24-12-2024</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">
-                                <button 
-                                    onclick="showDetails('detail-penawaran-2')" 
-                                    class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600 transition">
-                                    Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">3</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Ria</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">25-12-2024</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">
-                                <button 
-                                    onclick="showDetails('detail-penawaran-2')" 
-                                    class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600 transition">
-                                    Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
+                        @forelse($produks as $produk)
+                            <tr class="hover:bg-gray-100">
+                                <td class="border border-gray-300 px-4 py-2">{{ $produk->id }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $produk->nama }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ number_format($produk->harga, 0, ',', '.') }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $produk->stok }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $produk->kategori->nama }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-500 py-4">No products found.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-
-            <!-- Detail Penawaran -->
-            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Detail Penawaran</h3>
-                <table class="w-full border-collapse overflow-hidden rounded-lg shadow-md">
+        </div>
+        <br>
+        <!-- Penawaran and Detail Penawaran Section -->
+        <div class="flex space-x-8">
+            <!-- Penawaran Section -->
+            <div class="bg-white shadow-md rounded-lg p-6 w-full h-full">
+                <h2 class="text-xl font-semibold mb-4">Daftar Penawaran</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr class="bg-blue-600 text-black">
-                            <th class="px-4 py-3 text-left">Detail</th>
-                            <th class="px-4 py-3 text-left">Jumlah</th>
-                            <th class="px-4 py-3 text-left">Subtotal</th>
-                            <th class="px-4 py-3 text-center">Penawaran</th>
-                            <th class="px-4 py-3 text-center">Produk</th>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">No</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Customer</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Sales</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">1</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">10 pcs</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">550.000</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">1</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Kartu Nama</td>
-                        </tr>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">2</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">50 pcs</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">5.000.000</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">2</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Hard Box</td>
-                        </tr>
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">3</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">30 Lembar</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">750.000</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">3</td>
-                            <td class="px-4 py-3 border-b border-gray-300 dark:border-gray-700 text-center">Sticker Vinyl</td>
-                        </tr>
+                        @forelse($penawarans as $penawaran)
+                            <tr class="hover:bg-gray-100">
+                                <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->customer->nama }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->user->name }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->status }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->tanggal->format('d-m-Y') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-500 py-4">No offers found.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
-    <script>
-        function showDetails(id) {
-            document.querySelectorAll('[id^="detail-penawaran-"]').forEach(el => el.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        }
-    </script>
+            <!-- Detail Penawaran Section -->
+            <div class="bg-white shadow-md rounded-lg p-6 w-full h-full">
+                <h2 class="text-xl font-semibold mb-4">Detail Penawaran</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-4 py-2 text-left">No</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Nomor Penawaran</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Produk</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Jumlah</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($detailPenawarans as $detail)
+                            <tr class="hover:bg-gray-100">
+                                <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $detail->penawaran_id }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $detail->produk->nama }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $detail->jumlah }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-500 py-4">No offer details found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
