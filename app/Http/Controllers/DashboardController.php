@@ -21,9 +21,15 @@ class DashboardController extends Controller
     
     // Ambil data produk dengan relasi kategori
     $produks = Produk::with('kategori')->paginate(10);
+
+    // Hitung total produk
+    $totalProducts = Produk::count();
     
     // Ambil data penawaran dengan relasi customer dan sales
     $penawarans = Penawaran::with('customer', 'user')->paginate(10);
+
+    // Hitung total penawaran
+    $totalOffers = Penawaran::count();
     
     // Ambil data customer
     $customers = Customer::paginate(10);
@@ -32,6 +38,6 @@ class DashboardController extends Controller
     $detailPenawarans = DetailPenawaran::paginate(10);
     
     // Kirim data ke view
-    return view('dashboard', compact('users', 'totalUsers', 'produks', 'penawarans', 'customers', 'detailPenawarans'));
+    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans'));
 }
 }

@@ -15,9 +15,9 @@
         <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">ID</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left text-sm font-medium">Nama Kategori</th>
+                    <tr class="bg-gray-200 text-center">
+                        <th class="border border-gray-300 px-4 py-2 text-sm font-medium">ID</th>
+                        <th class="border border-gray-300 px-4 py-2 text-sm font-medium">Nama Kategori</th>
                     </tr>
                 </thead>
                 <tbody>

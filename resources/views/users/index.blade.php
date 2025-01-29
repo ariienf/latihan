@@ -10,11 +10,11 @@
 
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2 text-left">No</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Sales</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                        <th class="border border-gray-300 px-4 py-2 text-left">Terdaftar</th>
+                    <tr class="bg-gray-200 text-center">
+                        <th class="border border-gray-300 px-4 py-2">No</th>
+                        <th class="border border-gray-300 px-4 py-2">Sales</th>
+                        <th class="border border-gray-300 px-4 py-2">Email</th>
+                        <th class="border border-gray-300 px-4 py-2">Terdaftar</th>
                     </tr>
                 </thead>
                 <tbody>

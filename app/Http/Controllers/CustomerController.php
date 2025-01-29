@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Penawaran;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all(); // Ambil semua data customer
-        return view('customers.index', compact('customers'));
+        // Ambil data penawaran dengan pagination
+        $penawarans = Penawaran::with('customer')->paginate(10); // Menampilkan 10 penawaran per halaman
+
+        // Ambil data customer dengan pagination
+        $customers = Customer::paginate(10); // Menampilkan 10 customer per halaman
+        return view('penawaran.index', compact('penawarans', 'customers'));
     }
 
 
@@ -35,6 +40,6 @@ class CustomerController extends Controller
             'telepon' => $request->telepon,
         ]);
 
-        return redirect()->route('customers.index')->with('success', 'Data customer berhasil disimpan!');
+        return redirect()->route('penawaran.index')->with('success', 'Data customer berhasil disimpan!');
     }
 }

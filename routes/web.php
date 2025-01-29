@@ -24,8 +24,14 @@ Route::get('/dashboard', function () {
     // Ambil data produk dengan relasi kategori
     $produks = \App\Models\Produk::with('kategori')->paginate(10);
 
+    // Hitung total produk
+    $totalProducts = \App\Models\Produk::count();
+
     // Ambil data penawaran dengan relasi customer dan sales
     $penawarans = \App\Models\Penawaran::with('customer', 'user')->paginate(10);
+
+    // Hitung total penawaran
+    $totalOffers = \App\Models\Penawaran::count();
     
     // Ambil data customer
     $customers = \App\Models\Customer::paginate(10);
@@ -35,7 +41,7 @@ Route::get('/dashboard', function () {
  
 
     // Kirim data ke view
-    return view('dashboard', compact('users', 'totalUsers', 'produks', 'penawarans', 'customers', 'detailPenawarans'));
+    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
