@@ -24,6 +24,9 @@
         <!-- Daftar Penawaran -->
         <h2 class="mt-8 text-2xl font-semibold text-black">Daftar Penawaran</h2>
         <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+            <p class="text-lg font-semibold mb-4">
+                Total Penawaran : <span class="text-blue-500">{{ $totalPenawaran }}</span>
+            </p>
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200 text-center">
@@ -70,6 +73,9 @@
         <!-- Daftar Customer -->
         <h2 class="mt-10 text-2xl font-semibold text-black">Daftar Customer</h2>
         <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+            <p class="text-lg font-semibold mb-4">
+                Total Customer : <span class="text-blue-500">{{ $totalCustomer }}</span>
+            </p>
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200 text-center">

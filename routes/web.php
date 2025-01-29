@@ -6,6 +6,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DetailPenawaranController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::get('/dashboard', function () {
     // Ambil data semua pengguna
@@ -36,12 +39,16 @@ Route::get('/dashboard', function () {
     // Ambil data customer
     $customers = \App\Models\Customer::paginate(10);
 
+    // Ambil data detail penawaran 
     $detailPenawarans = \App\Models\DetailPenawaran::paginate(10);
+
+    // Hitung Total Detail Penawaran
+    $totalDetail = \App\Models\DetailPenawaran::count();
 
  
 
     // Kirim data ke view
-    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans'));
+    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans', 'totalDetail'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 

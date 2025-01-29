@@ -38,6 +38,13 @@
                 </div>
             </div>
 
+            <div class="hidden sm:flex sm:ms-10">
+                <form action="{{ route('search') }}" method="GET" class="flex items-center">
+                    <input type="text" name="query" placeholder="Search..." class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <button type="submit" class="ml-2 bg-black text-white rounded-md px-4 py-2 text-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">Search</button>
+                </form>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">

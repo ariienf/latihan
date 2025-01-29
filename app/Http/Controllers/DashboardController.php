@@ -36,8 +36,11 @@ class DashboardController extends Controller
 
     // Ambil data detail penawaran terkait penawaran ini
     $detailPenawarans = DetailPenawaran::paginate(10);
+
+    // Hitung total detail penawaran
+    $totalDetail = DetailPenawaran::count();
     
     // Kirim data ke view
-    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans'));
+    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans', 'totalDetail'));
 }
 }

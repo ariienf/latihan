@@ -12,8 +12,9 @@ class ProdukController extends Controller
     {
         // Paginate dengan 10 item per halaman, termasuk relasi kategori
         $produks = Produk::with('kategori')->paginate(10);
+        $totalProduk = Produk::count();
     
-        return view('produk.index', compact('produks'));
+        return view('produk.index', compact('produks', 'totalProduk'));
     }
     
 

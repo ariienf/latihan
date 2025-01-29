@@ -24,7 +24,7 @@
 
                 <!-- Menambahkan Judul -->
                 <h1 class="text-4xl font-semibold text-center mt-8 text-[#FF2D20]">
-                    Data Penawaran
+                    Data Penawaran Sales
                 </h1>    
 
                 <div class="mb-6 flex justify-center items-center">

@@ -54,8 +54,9 @@ class DetailPenawaranController extends Controller
     {   
         // Ambil data detail penawaran terkait penawaran ini
         $detailPenawarans = DetailPenawaran::paginate(10);
+        $totalDetail = DetailPenawaran::count();
 
-        return view('detail_penawaran.index', compact('detailPenawarans'));
+        return view('detail_penawaran.index', compact('detailPenawarans', 'totalDetail'));
     }
 
     public function edit($id)

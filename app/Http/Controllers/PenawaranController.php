@@ -15,12 +15,14 @@ class PenawaranController extends Controller
     {
         // Ambil data penawaran dengan pagination
         $penawarans = Penawaran::with('customer')->paginate(10); // Menampilkan 10 penawaran per halaman
+        $totalPenawaran = Penawaran::count();
         
         // Ambil data customer dengan pagination
         $customers = Customer::paginate(10); // Menampilkan 10 customer per halaman
-        
+        $totalCustomer = Customer::count();
+
         // Kirim data ke view
-        return view('penawaran.index', compact('penawarans', 'customers'));
+        return view('penawaran.index', compact('penawarans', 'totalPenawaran', 'customers', 'totalCustomer'));
     }
 
     public function create()

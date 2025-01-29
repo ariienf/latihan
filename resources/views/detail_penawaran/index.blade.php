@@ -13,6 +13,9 @@
 
         <!-- Tabel Detail Penawaran -->
         <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+            <p class="text-lg font-semibold mb-4">
+                Total Detail Penawaran : <span class="text-blue-500">{{ $totalDetail }}</span>
+            </p>
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200 text-center">
