@@ -5,6 +5,7 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailPenawaranController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
@@ -17,40 +18,11 @@ Route::get('/', function () {
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-Route::get('/dashboard', function () {
-    // Ambil data semua pengguna
-    $users = \App\Models\User::all();
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-    // Ambil total pengguna
-    $totalUsers = \App\Models\User::count();
-
-    // Ambil data produk dengan relasi kategori
-    $produks = \App\Models\Produk::with('kategori')->paginate(10);
-
-    // Hitung total produk
-    $totalProducts = \App\Models\Produk::count();
-
-    // Ambil data penawaran dengan relasi customer dan sales
-    $penawarans = \App\Models\Penawaran::with('customer', 'user')->paginate(10);
-
-    // Hitung total penawaran
-    $totalOffers = \App\Models\Penawaran::count();
-    
-    // Ambil data customer
-    $customers = \App\Models\Customer::paginate(10);
-
-    // Ambil data detail penawaran 
-    $detailPenawarans = \App\Models\DetailPenawaran::paginate(10);
-
-    // Hitung Total Detail Penawaran
-    $totalDetail = \App\Models\DetailPenawaran::count();
-
- 
-
-    // Kirim data ke view
-    return view('dashboard', compact('users', 'totalUsers', 'produks', 'totalProducts', 'penawarans', 'totalOffers', 'customers', 'detailPenawarans', 'totalDetail'));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/penawaran/{id}', [DashboardController::class, 'show'])->name('penawaran.detail');
 
 Route::resource('users', UserController::class);
 Route::get('/customers/{id}/edit', [PenawaranController::class, 'editCustomer'])->name('customers.edit');

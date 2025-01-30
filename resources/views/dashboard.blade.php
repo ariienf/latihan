@@ -47,94 +47,57 @@
             </div>
         </div>
 
-        <!-- Chart Section -->
+        <!-- Chart for Penawaran -->
         <div class="mb-8">
-            <h2 class="text-xl font-semibold mb-4">Penawaran & Produk Grafik</h2>
+            <h2 class="text-xl font-semibold mb-5">Penawaran</h2>
+            <form method="GET" action="{{ url('/dashboard') }}">
+                <select name="filter" onchange="this.form.submit()">
+                    <option value="today" {{ $filter == 'today' ? 'selected' : '' }}>Hari Ini</option>
+                    <option value="7days" {{ $filter == '7days' ? 'selected' : '' }}>7 Hari Terakhir</option>
+                    <option value="1month" {{ $filter == '1month' ? 'selected' : '' }}>1 Bulan Terakhir</option>
+                    <option value="3months" {{ $filter == '3months' ? 'selected' : '' }}>3 Bulan Terakhir</option>
+                    <option value="1year" {{ $filter == '1year' ? 'selected' : '' }}>1 Tahun Terakhir</option>
+                </select>
+            </form>
             <div class="bg-white shadow-md rounded-lg p-4">
-                <canvas id="salesChart" height="100"></canvas>
+                <canvas id="penawaranChart" height="100"></canvas>
             </div>
         </div>
-
-        <!-- Penawaran Section -->
+        <!-- Tabel untuk Menampilkan Detail Penawaran -->
         <div class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Daftar Penawaran</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200 text-center">
-                            <th class="border border-gray-300 px-4 py-2">No</th>
-                            <th class="border border-gray-300 px-4 py-2">Customer</th>
-                            <th class="border border-gray-300 px-4 py-2">Sales</th>
-                            <th class="border border-gray-300 px-4 py-2">Status</th>
-                            <th class="border border-gray-300 px-4 py-2">Tanggal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($penawarans as $penawaran)
-                            <tr class="hover:bg-gray-100 text-center">
-                                <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border border-gray-300 px-4 py-2">
-                                    <div class="flex items-center">
-                                        <svg class="h-6 w-6 text-yellow-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        {{ $penawaran->customer->nama }}
-                                    </div>
-                                </td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->user->name }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->status }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->tanggal->format('d-m-Y') }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-gray-500 py-4">No offers found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Detail Penawaran Section -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Detail Penawaran</h2>
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border border-gray-300">
                     <thead>
                         <tr class="bg-gray-200 text-center">
                             <th class="border border-gray-300 px-4 py-2">No</th>
                             <th class="border border-gray-300 px-4 py-2">Nomor Penawaran</th>
-                            <th class="border border-gray-300 px-4 py-2">Produk</th>
-                            <th class="border border-gray-300 px-4 py-2">Jumlah</th>
-                            <th class="border border-gray-300 px-4 py-2">Subtotal</th>
+                            <th class="border border-gray-300 px-4 py-2">Customer</th>
+                            <th class="border border-gray-300 px-4 py-2">Tanggal</th>
+                            <th class="border border-gray-300 px-4 py-2">Status</th>
+                            <th class="border border-gray-300 px-4 py-2">Detail</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($detailPenawarans as $detail)
+                        @forelse($filteredPenawarans as $penawaran)
                             <tr class="hover:bg-gray-100 text-center">
                                 <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $detail->penawaran_id }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->id }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->customer->nama }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->tanggal->format('d-m-Y') }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ $penawaran->status }}</td>
                                 <td class="border border-gray-300 px-4 py-2">
-                                    <div class="flex items-center">
-                                        <svg class="h-6 w-6 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        {{ $detail->produk->nama }}
-                                    </div>
+                                    <a href="{{ route('penawaran.detail', $penawaran->id) }}" class="text-blue-500 hover:underline">Check</a>
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $detail->jumlah }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ number_format($detail-> subtotal, 0, ',', '.') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-gray-500 py-4">No offer details found.</td>
+                                <td colspan="6" class="border border-gray-300 px-4 py-2 text-center">Tidak ada data penawaran untuk filter yang dipilih.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
-
         <!-- Products Section -->
         <div class="mb-8">
             <h2 class="text-2xl font-semibold mb-4">Daftar Produk</h2>
@@ -174,36 +137,35 @@
                 </table>
             </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('salesChart').getContext('2d');
-        const salesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Detail Penawaran', 'Penawaran'],
-                datasets: [{
-                    label: 'Total',
-                    data: [{{ $totalDetail }}, {{ $totalOffers }}],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+    
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Grafik untuk Jumlah Penawaran berdasarkan tanggal
+            const ctxPenawaran = document.getElementById('penawaranChart').getContext('2d');
+            const penawaranData = @json($penawaranData);
+        
+            const labels = Object.keys(penawaranData);
+            const data = Object.values(penawaranData);
+        
+            const penawaranChart = new Chart(ctxPenawaran, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Penawaran',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 </x-app-layout>
